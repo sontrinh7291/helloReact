@@ -6,7 +6,7 @@ var WeatherMess = React.createClass({
 
     return (
       <div>
-          <h2>It's is {temp} in {location}</h2>
+          <h3 className="text-center">It's is {temp} Celcius in {location}</h3>
       </div>
     );
   }

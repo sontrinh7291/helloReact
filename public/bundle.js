@@ -25044,26 +25044,42 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      location: 'Miami',
-	      temp: 22
+	      isLoading: false
 	    };
 	  },
 	  handleSearch: function handleSearch(location) {
 	    var that = this;
+
+	    this.setState({ isLoading: true });
+
 	    OpenWeatherMap.getTemp(location).then(function (temp) {
 	      that.setState({
 	        location: location,
-	        temp: temp
+	        temp: temp,
+	        isLoading: false
 	      });
 	    }, function (errorMessage) {
+	      that.setState({ isLoading: false });
 	      alert(errorMessage);
 	    });
 	  },
 	  render: function render() {
 	    var _state = this.state,
+	        isLoading = _state.isLoading,
 	        temp = _state.temp,
 	        location = _state.location;
 
+	    function renderMessage() {
+	      if (isLoading) {
+	        return React.createElement(
+	          'h3',
+	          null,
+	          'Fetching...'
+	        );
+	      } else if (temp && location) {
+	        return React.createElement(WeatherMess, { temp: temp, location: location });
+	      }
+	    }
 
 	    return React.createElement(
 	      'div',
@@ -25074,7 +25090,7 @@
 	        'Weather Component'
 	      ),
 	      React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-	      React.createElement(WeatherMess, { temp: temp, location: location })
+	      renderMessage()
 	    );
 	  }
 	});
@@ -25110,7 +25126,7 @@
 	        React.createElement('input', { type: 'text', ref: 'location' }),
 	        React.createElement(
 	          'button',
-	          null,
+	          { className: 'hollow button expanded' },
 	          'Get Weather'
 	        )
 	      )
@@ -25124,12 +25140,12 @@
 /* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(8);
 
 	var WeatherMess = React.createClass({
-	  displayName: 'WeatherMess',
+	  displayName: "WeatherMess",
 
 	  render: function render() {
 	    var _props = this.props,
@@ -25138,14 +25154,14 @@
 
 
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
 	      React.createElement(
-	        'h2',
-	        null,
-	        'It\'s is ',
+	        "h3",
+	        { className: "text-center" },
+	        "It's is ",
 	        temp,
-	        ' in ',
+	        " Celcius in ",
 	        location
 	      )
 	    );
@@ -26713,15 +26729,32 @@
 /* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var React = __webpack_require__(8);
-
 	var About = function About(props) {
 	  return React.createElement(
-	    'h3',
+	    "div",
 	    null,
-	    'About Component'
+	    React.createElement(
+	      "h1",
+	      { className: "text-center" },
+	      "About"
+	    ),
+	    React.createElement(
+	      "p",
+	      null,
+	      "My first application build on React."
+	    ),
+	    React.createElement(
+	      "p",
+	      null,
+	      React.createElement(
+	        "a",
+	        { href: "http://www.openweathermap.net" },
+	        "Data from Open Weather Map"
+	      )
+	    )
 	  );
 	};
 
